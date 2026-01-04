@@ -1,191 +1,167 @@
-# Core Java Assignments
-This document contains Day 1 Core Java backend training assignments focused on OOP concepts, memory management, multithreading, file handling, reflection, generics, and exception handling for hands-on learning.
-
-**Question 1**
-
-Develop two classes
-
-Alpha class with following properties
-
-private int
-
-protected int
-
-public int
-
-Generate getter and setter method for these properties
-
-Beta class with public static void main method
-
-Create an object of Alpha class
-
-Try accessing modification of protected and public data member of the Alpha class
-
-Use getter and setter method for retrieving and for modifying values of private member
-
-**Question 2**
-
-Memory management : Stack vs Heap
-
-int intVal;
-
-String stringVal;
-
-Generate getter and setter methods for the variables above
-
-Implement toString() method for the class DataObject
-
-Implemetswap method which takes DataObjectclass and swaps the content from current object with the input object
-
-Implement main method, and create two instances of the DataObjectclass
-
-Call swap method on one of the instance and pass the other instance as an input
-
-Use toString() method to print the content of the class
-
-**Question 3**
-
-Implement Employee class with following specification
-
-String firstName
-
-String lastName
-
-Date dateOfBirth
-
-double experience
-
-Implement MyCollection class with the following specification
-
-Array of 300 entries of Employee class
-
-writeCounter
-
-readCounter
-
-The following methods to be syncronized
-
-add(Employee) → new element should be added at writeCounter, writeCounter should be increment after every insert
-
-Employee get() → element should be readCounter, readCounter should be incremented after every read operation
-
-Define a interface MyFileHandler with following methods
-
-read
-
-write
-
-Declare CSVFileHandler, XMLFileHandler, JsonFileHandler classes that implements MyFileHandler
-
-CSVFileHandler should have ability to read and write data in CSV
-
-XMLFileHandler should have ability to read and write data in XML
-
-JsonFileHandler should have ability to read and write data in JSON
-
-Generate three data files and each file containing 100 records
-
-File one should be CSV format
-
-File two should be XML format
-
-File three should be JSON format
-
-Develop a controller class MyController with the following logic
-
-Create three threads and allocate one threads each for reading data from CSV, XML and JSON
-
-Each thread reads record by record and insert into MyCollection class
-
-Main thread that has created three threads should wait for all threads to finish
-
-Once the read finishes
-
-Print the count of elements from MyCollection
-
-It should be 300
-
-Write counter should be properly updated to 300
-
-Create three threads to write data from MyCollection with the following specifications
-
-Each thread reading one record from MyCollection, read method should return the value and increment the counter
-
-Thread 1 should write record in CSV
-
-Thread 2 should write records in XML
-
-Thread 3 should write records in JSON
-
-Once record is wirtten to the file thread should seek next record from MyCollection
-
-Each thread should finish reading after 100 records
-
-Files should not have duplicate records and should not have more than 100 records
-
-**Question 4**
-
-Reference:
-https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html
-
-Create following classes
-
-Employee Class with the following properties
-
-private String firstName
-
-private String lastName
-
-private long age
-
-private Date dateOfJoining
-
-Generate getter and setter methods
-
-Override the following methods
-
-toString()
-
-equals()
-
-hashCode()
-
-Create ReflectionTest class with main method and implement following logic
-
-Using reflection features get the Class object for Employee class
-
-Get the list of declared members / fields for the class
-
-Get the list of methods implemented
-
-Get the list of Annotations defined in the class
-
-**Question 5**
-
-Implement MyList generic class, which has a member of generic array of size hundred
-
-This class should support the following operations:
-
-Add a new value
-
-Delete based on index
-
-Delete based on value
-
-Get from an index
-
-This class should be used to create a list of:
-
-Integer
-
-String
-
-Custom class
-
-Create following custom Exception classes:
-
-MaxSizeException
-
-NoDataException
-
-Modify the MyList class implementation using the above exceptions based on the conditions which satisfy these exception cases
+# Core Java Design Pattern Assignments
+
+## Assignment 1
+
+ASSIGNMENT 1: Configuration Management System (Singleton & Factory)
+--------------------------------------------------------------------------------
+SCENARIO:
+You are building a configuration management system for a microservices application.
+
+REQUIREMENTS:
+1. SINGLETON PATTERN - Implement a ConfigurationManager class that:
+   - Uses thread-safe Singleton pattern (Double-Checked Locking)
+   - Stores configuration as key-value pairs in a HashMap
+   - Provides getConfig(String key) and setConfig(String key, String value) methods
+   - Has a method loadFromSource(ConfigSource source) to load configurations
+
+2. FACTORY PATTERN - Implement a ConfigSourceFactory that:
+   - Creates different types of configuration sources:
+     * JsonConfigSource
+     * YamlConfigSource
+     * PropertiesConfigSource
+   - Each source should implement a ConfigSource interface with a readConfig() method
+   - Factory should have a createSource(String type, String filePath) method
+
+DELIVERABLES:
+- ConfigurationManager class (Singleton)
+- ConfigSource interface
+- Three concrete implementations (Json, Yaml, Properties)
+- ConfigSourceFactory class
+- Demo showing thread safety and loading from different sources
+
+BONUS CHALLENGES:
+- Add a refreshConfig() method that reloads configuration from the source
+- Implement a caching mechanism in the factory to reuse ConfigSource instances
+
+TIP: Start with the interfaces, then implement concrete classes, and finally test 
+with a main class.
+
+---
+
+## Assignment 2
+
+================================================================================
+ASSIGNMENT 2: Smart Home Automation System (Command, Observer & Builder)
+Time: 45 minutes
+================================================================================
+SCENARIO:
+You are building a smart home automation system that controls various devices 
+and notifies users of events.
+
+PART 1 - COMMAND PATTERN: Implement device controls
+- Create a SmartDevice interface with methods:
+  * turnOn()
+  * turnOff()
+  * getStatus()
+
+- Implement concrete devices:
+  * SmartLight
+  * SmartThermostat
+  * SmartDoorLock
+
+- Create Command interface and concrete commands:
+  * TurnOnCommand
+  * TurnOffCommand
+  * SetTemperatureCommand
+
+- Implement a RemoteControl class (Invoker) that executes commands
+- BONUS: Add undo functionality to reverse the last command
+
+PART 2 - OBSERVER PATTERN: Implement event notifications
+- Create a DeviceEventPublisher (Subject) that tracks device state changes
+- Implement observers:
+  * MobileAppNotifier
+  * EmailNotifier
+  * LoggingService
+
+- When any device state changes, all registered observers should be notified
+- Each observer should display the notification in its own way
+
+PART 3 - BUILDER PATTERN: Implement automation rule creation
+- Create an AutomationRule class with:
+  * ruleName
+  * triggerDevice
+  * triggerCondition
+  * actionCommand
+  * schedule
+  * enabled
+
+- Implement an AutomationRule.Builder for constructing complex rules
+- Support method chaining
+
+DELIVERABLES:
+- All device classes implementing SmartDevice interface
+- Command pattern implementation with at least 3 commands
+- Observer pattern with DeviceEventPublisher and 3 observers
+- AutomationRule class with Builder
+- A demo class showing:
+  * Creating devices and executing commands
+  * Registering observers and triggering notifications
+  * Building complex automation rules using the Builder
+  * Executing an automation rule that triggers commands and notifies observers
+
+---
+
+## Assignment 3
+
+================================================================================
+ASSIGNMENT 3: Document Processing System (Prototype, Decorator & Facade)
+================================================================================
+SCENARIO:
+You are building an enterprise document processing system that handles various 
+document types and applies formatting.
+
+PART 1 - PROTOTYPE PATTERN: Implement document templates
+- Create an abstract Document class implementing Cloneable
+- Implement concrete types:
+  * Invoice
+  * Contract
+  * Report
+
+- Each document should have:
+  * title
+  * content
+  * metadata (Map<String, String>)
+
+- Implement clone() method for creating copies
+- Create a DocumentRegistry that stores template documents and returns clones
+
+PART 2 - DECORATOR PATTERN: Implement document processing pipeline
+- Create a DocumentProcessor interface with process(Document doc) method
+- Base implementation: BasicDocumentProcessor
+
+- Decorators to add:
+  * WatermarkDecorator - adds watermark to document
+  * EncryptionDecorator - encrypts document content
+  * CompressionDecorator - compresses document
+  * AuditLogDecorator - logs processing activity
+
+- Allow chaining multiple decorators
+
+PART 3 - FACADE PATTERN: Simplify document operations
+- Create a DocumentServiceFacade that hides complexity of:
+  * Creating documents from templates
+  * Processing through multiple decorators
+  * Validating documents
+  * Saving to storage
+
+- Provide simple methods like:
+  * createInvoice()
+  * createSecureContract()
+  * generateReport()
+
+DELIVERABLES:
+- Document class hierarchy with Prototype pattern
+- DocumentRegistry for managing templates
+- DocumentProcessor interface and 4 decorators
+- DocumentServiceFacade
+- A comprehensive demo showing:
+  * Creating documents from templates
+  * Cloning and modifying documents
+  * Processing documents through decorator chain
+  * Using facade for simplified operations
+
+BONUS CHALLENGES:
+- Add validation in the Facade before processing
+- Implement a decorator that can be removed (like undo functionality)
+- Add different types of documents to the registry
